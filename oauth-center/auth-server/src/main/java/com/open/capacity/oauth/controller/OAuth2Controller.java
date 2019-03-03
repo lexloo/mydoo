@@ -2,6 +2,7 @@ package com.open.capacity.oauth.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -109,7 +110,8 @@ public class OAuth2Controller {
             }
 
             TokenRequest tokenRequest =
-                    new TokenRequest(MapUtils.EMPTY_MAP, clientId, clientDetails.getScope(), "customer");
+                    new TokenRequest(Collections.emptyMap(), clientId, clientDetails.getScope(), "customer");
+            // new TokenRequest(MapUtils.EMPTY_MAP, clientId, clientDetails.getScope(), "customer");
 
             OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);
 
