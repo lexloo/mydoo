@@ -3,7 +3,6 @@ package com.open.capacity.oauth.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.open.capacity.commons.PageResult;
 import com.open.capacity.commons.Result;
 import com.open.capacity.oauth.dao.ClientDao;
@@ -47,7 +44,6 @@ public class IClientServiceImpl implements IClientService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Override
     @Transactional
     public void saveClient(ClientDto clientDto) {
@@ -70,7 +66,7 @@ public class IClientServiceImpl implements IClientService {
         } else {// 新增
             Client r = clientDao.getClient(clientDto.getClientId());
             if (r != null) {
-                return Result.failed(clientDto.getClientId()+"已存在");
+                return Result.failed(clientDto.getClientId() + "已存在");
             }
             clientDao.save(clientDto);
         }
@@ -91,13 +87,12 @@ public class IClientServiceImpl implements IClientService {
     }
 
     private void updateClient(Client client, List<Long> permissionIds) {
-//		Client r = clientDao.getClient(client.getClientId());
-//		if (r != null && r.getId() != client.getId()) {
-//			throw new IllegalArgumentException(client.getClientId() + "已存在");
-//		}
+        // Client r = clientDao.getClient(client.getClientId());
+        // if (r != null && r.getId() != client.getId()) {
+        // throw new IllegalArgumentException(client.getClientId() + "已存在");
+        // }
 
         clientDao.update(client);
-
 
         clientDao.deleteClientPermission(client.getId());
         if (!CollectionUtils.isEmpty(permissionIds)) {
@@ -115,11 +110,9 @@ public class IClientServiceImpl implements IClientService {
             clientDetails.setClientSecret(client.getClientSecret());
             redisTemplate.boundHashOps(CACHE_CLIENT_KEY).put(clientId, JSONObject.toJSONString(clientDetails));
 
-
         } catch (Exception e) {
 
         }
-
 
         log.debug("修改应用{}", client.getClientId());
     }
@@ -129,45 +122,47 @@ public class IClientServiceImpl implements IClientService {
     public void deleteClient(Long id) {
         clientDao.delete(id);
 
-        sysClientServiceDao.delete(id,null);
+        sysClientServiceDao.delete(id, null);
 
         log.debug("删除应用id:{}", id);
     }
 
-	@Override
-	public PageResult<Client> listRoles(Map<String, Object> params) {
+    @Override
+    public PageResult<Client> listRoles(Map<String, Object> params) {
+        // //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+        // PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
+        // List<Client> list = clientDao.findList(params);
+        // PageInfo<Client> pageInfo = new PageInfo<>(list);
+        // return PageResult.<Client>builder().data(pageInfo.getList()).code(0).count(pageInfo.getTotal()).build() ;
 
-        //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
-        PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
-        List<Client> list = clientDao.findList(params);
-        PageInfo<Client> pageInfo = new PageInfo<>(list);
-        return PageResult.<Client>builder().data(pageInfo.getList()).code(0).count(pageInfo.getTotal()).build()  ;
+        // // TODO Auto-generated method stub
+        // int total = clientDao.count(params);
+        // List<Client> list = Collections.emptyList();
+        //
+        // if (total > 0) {
+        // PageUtil.pageParamConver(params, false);
+        // list = clientDao.findList(params);
+        //
+        // }
+        // return PageResult.<Client>builder().data(list).code(0).count((long)total).build() ;
 
-//		// TODO Auto-generated method stub
-//		int total = clientDao.count(params);
-//		List<Client> list = Collections.emptyList();
-//
-//		if (total > 0) {
-//			PageUtil.pageParamConver(params, false);
-//			list = clientDao.findList(params);
-//
-//		}
-//		return PageResult.<Client>builder().data(list).code(0).count((long)total).build()  ;
-	}
-	public  Client getById(Long id) {
-		return clientDao.getById(id);
-	}
+        return null;
+    }
 
-	@Override
-	public List<Client> findList(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		return clientDao.findList(params);
-	}
+    public Client getById(Long id) {
+        return clientDao.getById(id);
+    }
 
-	@Override
-	public List<Client> listByUserId(Long userId) {
-		// TODO Auto-generated method stub
-		return clientDao.listByUserId(userId);
-	}
+    @Override
+    public List<Client> findList(Map<String, Object> params) {
+        // TODO Auto-generated method stub
+        return clientDao.findList(params);
+    }
+
+    @Override
+    public List<Client> listByUserId(Long userId) {
+        // TODO Auto-generated method stub
+        return clientDao.listByUserId(userId);
+    }
 
 }

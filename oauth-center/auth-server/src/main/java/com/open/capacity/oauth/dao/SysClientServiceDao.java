@@ -3,11 +3,6 @@ package com.open.capacity.oauth.dao;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-
 import com.open.capacity.oauth.model.SysService;
 
 /**
@@ -17,19 +12,16 @@ import com.open.capacity.oauth.model.SysService;
  * @Version: [1.0.0]
  * @Copy: [com.zzg]
  */
-@Mapper
+// @Mapper
 public interface SysClientServiceDao {
 
+    // @Insert("insert into sys_client_service(clientId, serviceId) values(#{clientId}, #{serviceId})")
+    int save(Long clientId, Long serviceId);
 
-    @Insert("insert into sys_client_service(clientId, serviceId) values(#{clientId}, #{serviceId})")
-    int save(@Param("clientId") Long clientId, @Param("serviceId") Long serviceId);
+    int delete(Long clientId, Long serviceId);
 
-    int delete(@Param("clientId") Long clientId, @Param("serviceId") Long serviceId);
-
-    @Select("select t.serviceId from sys_client_service t where t.clientId = #{clientId}")
+    // @Select("select t.serviceId from sys_client_service t where t.clientId = #{clientId}")
     Set<Long> findServiceIdsByClientId(Long clientId);
 
-    List<SysService> findServicesBySlientIds(@Param("clientIds") Set<Long> clientIds);
-
-
+    List<SysService> findServicesBySlientIds(Set<Long> clientIds);
 }

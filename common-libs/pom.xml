@@ -86,6 +86,7 @@
     </dependencies>
     <modules>
         <module>db-commons</module>
+        <module>api-commons</module>
         <!--         <module>auth-sso</module>
         <module>auth-client</module> -->
     </modules>
